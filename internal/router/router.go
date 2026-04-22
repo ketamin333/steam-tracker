@@ -2,17 +2,19 @@ package router
 
 import (
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	chimiddleware "github.com/go-chi/chi/v5/middleware"
+	"go.rest.api/internal/middleware"
+	userrepository "go.rest.api/internal/repository/user"
 )
 
-func Setup() *chi.Mux {
+func Setup(userRepo *userrepository.UserRepository) *chi.Mux {
 	r := chi.NewRouter()
 
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
+	r.Use(chimiddleware.Logger)
+	r.Use(chimiddleware.Recoverer)
 
 	r.Route("/api", func(r chi.Router) {
-
+		r.Use(middleware.Auth(userRepo))
 	})
 
 	return r

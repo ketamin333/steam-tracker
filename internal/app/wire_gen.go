@@ -9,8 +9,7 @@ package app
 import (
 	"go.rest.api/internal/config"
 	"go.rest.api/internal/db"
-	"go.rest.api/internal/handlers/game"
-	"go.rest.api/internal/repository/game"
+	"go.rest.api/internal/repository/user"
 	"go.rest.api/internal/router"
 	"go.rest.api/internal/server"
 )
@@ -23,9 +22,8 @@ func Bootstrap() (*server.Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	gameRepository := game_repository.NewGameRepository(sqlDB)
-	handler := game_handler.NewHandler(gameRepository)
-	mux := router.Setup(handler)
+	userRepository := user_repository.NewUserRepository(sqlDB)
+	mux := router.Setup(userRepository)
 	serverServer := server.NewServer(configConfig, mux)
 	return serverServer, nil
 }
