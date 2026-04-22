@@ -47,5 +47,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  wire:
+    image: golang:1.22-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "go install github.com/google/wire/cmd/wire@latest && wire ./internal/app/..."
+    profiles:
+      - tools
+
 volumes:
   pgdata:

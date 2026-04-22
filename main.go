@@ -4,12 +4,14 @@ import (
 	"log"
 
 	"go.rest.api/internal/app"
-	"go.rest.api/internal/db"
 )
 
 func main() {
-	db.Init()
-	s := app.Bootstrap()
+	s, err := app.Bootstrap()
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if err := s.Run(); err != nil {
 		log.Fatal(err)
