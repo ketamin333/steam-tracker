@@ -18,6 +18,7 @@ func Setup(gameHandler *gamehandler.Handler) *chi.Mux {
 		r.Route("/games", func(r chi.Router) {
 			r.Post("/", handlers.Wrap(gameHandler.Create))
 			r.Get("/", handlers.Wrap(gameHandler.GetAll))
+			r.Delete("/{id}", handlers.Wrap(gameHandler.Delete))
 		})
 
 	})
