@@ -11,6 +11,7 @@ type Repository struct {
 
 type TrackingRepository interface {
 	Add(ctx context.Context, userID, gameID int) error
+	Remove(ctx context.Context, userID, gameID int) error
 }
 
 var _ TrackingRepository = (*Repository)(nil)
