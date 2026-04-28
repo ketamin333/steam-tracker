@@ -15,6 +15,9 @@ func Bootstrap() (*server.Server, error) {
 		db.New,
 		repoSet,
 		srvSet,
+		serviceSet,
+		clientSet,
+		handlerSet,
 	)
 
 	return nil, nil

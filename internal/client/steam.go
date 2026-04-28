@@ -29,6 +29,12 @@ type SearchResponse struct {
 	Items []SearchResult `json:"items"`
 }
 
+type SteamSearcher interface {
+	Search(ctx context.Context, query string) ([]SearchResult, error)
+}
+
+var _ SteamSearcher = (*SteamClient)(nil)
+
 func NewClient() *SteamClient {
 	return &SteamClient{
 		httpClient: &http.Client{

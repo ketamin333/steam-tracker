@@ -7,11 +7,15 @@
 package app
 
 import (
+	"go.rest.api/internal/client"
 	"go.rest.api/internal/config"
 	"go.rest.api/internal/db"
+	"go.rest.api/internal/handler/game"
+	"go.rest.api/internal/repository/game"
 	"go.rest.api/internal/repository/user"
 	"go.rest.api/internal/router"
 	"go.rest.api/internal/server"
+	"go.rest.api/internal/service/game"
 )
 
 // Injectors from wire.go:
@@ -23,7 +27,11 @@ func Bootstrap() (*server.Server, error) {
 		return nil, err
 	}
 	repository := userrepo.New(sqlDB)
-	mux := router.New(repository)
+	steamClient := client.NewClient()
+	gamerepoRepository := gamerepo.New(sqlDB)
+	service := gameservice.New(steamClient, gamerepoRepository)
+	handler := gamehandler.New(service)
+	mux := router.New(repository, handler)
 	serverServer := server.New(configConfig, mux)
 	return serverServer, nil
 }
