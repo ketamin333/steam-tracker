@@ -1,9 +1,9 @@
-package models
+package model
 
 import "time"
 
 type Game struct {
-	ID         string    `json:"id"`
+	ID         int       `json:"id"`
 	SteamAppID int       `json:"steam_app_id"`
 	Name       string    `json:"name"`
 	CoverURL   *string   `json:"cover_url"`

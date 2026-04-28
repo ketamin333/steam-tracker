@@ -9,22 +9,25 @@ type Config struct {
 	DBUser     string
 	DBPassword string
 	DBName     string
+	DBSSLMode  string
 }
 
 func New() *Config {
 	return &Config{
-		ServerPort: getEnv("SERVER_PORT", "8080"),
-		DBHost:     getEnv("DB_HOST", "localhost"),
-		DBPort:     getEnv("DB_PORT", "5432"),
-		DBUser:     getEnv("DB_USER", "postgres"),
-		DBPassword: getEnv("DB_PASSWORD", "postgres"),
-		DBName:     getEnv("DB_NAME", "app"),
+		ServerPort: env("SERVER_PORT", "8080"),
+		DBHost:     env("DB_HOST", ""),
+		DBPort:     env("DB_PORT", ""),
+		DBUser:     env("DB_USER", ""),
+		DBPassword: env("DB_PASSWORD", ""),
+		DBName:     env("DB_NAME", ""),
+		DBSSLMode:  env("DB_SSL_MODE", ""),
 	}
 }
 
-func getEnv(key, defaultValue string) string {
-	if val := os.Getenv(key); val != "" {
-		return val
+func env(key string, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
 	}
-	return defaultValue
+
+	return fallback
 }
