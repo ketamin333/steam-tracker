@@ -2,8 +2,10 @@ package trackedgamehandler
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
+	"go.rest.api/internal/apperr"
 	"go.rest.api/internal/httputil"
 	"go.rest.api/internal/middleware"
 )
@@ -24,9 +26,14 @@ func (h *Handler) Track(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	userID := r.Context().Value(middleware.UserIDKey).(int)
-	if err := h.svc.Track(r.Context(), userID, req.GameID); err != nil {
+
+	g, err := h.svc.Track(r.Context(), userID, req.GameID)
+	if errors.Is(err, apperr.ErrAlreadyExists) {
+		return httputil.Error(w, http.StatusConflict, "game already tracked")
+	}
+	if err != nil {
 		return httputil.Error(w, http.StatusInternalServerError, "server error")
 	}
 
-	return httputil.JSON(w, http.StatusCreated, nil)
+	return httputil.JSON(w, http.StatusCreated, g)
 }

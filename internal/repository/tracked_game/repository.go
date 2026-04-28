@@ -3,6 +3,8 @@ package trackedgamerepo
 import (
 	"context"
 	"database/sql"
+
+	"go.rest.api/internal/model"
 )
 
 type Repository struct {
@@ -10,7 +12,7 @@ type Repository struct {
 }
 
 type TrackingRepository interface {
-	Add(ctx context.Context, userID, gameID int) error
+	Add(ctx context.Context, userID, gameID int) (*model.TrackedGame, error)
 	Remove(ctx context.Context, userID, gameID int) error
 }
 

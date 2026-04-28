@@ -1,13 +1,17 @@
 package trackedgamehandler
 
-import "context"
+import (
+	"context"
+
+	"go.rest.api/internal/model"
+)
 
 type Handler struct {
 	svc TrackedGameService
 }
 
 type TrackedGameService interface {
-	Track(ctx context.Context, userID, gameID int) error
+	Track(ctx context.Context, userID, gameID int) (*model.TrackedGame, error)
 	Untrack(ctx context.Context, userID, gameID int) error
 }
 

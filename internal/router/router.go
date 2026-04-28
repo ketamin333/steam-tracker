@@ -24,8 +24,11 @@ func New(
 		r.Use(middleware.Auth(userRepo))
 
 		r.Get("/games", httputil.Wrap(gameHandler.Search))
-		r.Post("/games", httputil.Wrap(trackedGameHandler.Track))
-		r.Delete("/games/{id}", httputil.Wrap(trackedGameHandler.Untrack))
+
+		r.Route("/user/games", func(r chi.Router) {
+			r.Post("/", httputil.Wrap(trackedGameHandler.Track))
+			r.Delete("/{id}", httputil.Wrap(trackedGameHandler.Untrack))
+		})
 	})
 
 	return r

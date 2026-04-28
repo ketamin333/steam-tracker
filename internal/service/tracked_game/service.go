@@ -3,6 +3,7 @@ package trackedgameservice
 import (
 	"context"
 
+	"go.rest.api/internal/model"
 	trackedgamerepo "go.rest.api/internal/repository/tracked_game"
 )
 
@@ -14,7 +15,7 @@ func New(repo trackedgamerepo.TrackingRepository) *Service {
 	return &Service{repo: repo}
 }
 
-func (s *Service) Track(ctx context.Context, userID, gameID int) error {
+func (s *Service) Track(ctx context.Context, userID, gameID int) (*model.TrackedGame, error) {
 	return s.repo.Add(ctx, userID, gameID)
 }
 

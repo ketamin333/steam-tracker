@@ -11,11 +11,14 @@ import (
 	"go.rest.api/internal/config"
 	"go.rest.api/internal/db"
 	"go.rest.api/internal/handler/game"
+	"go.rest.api/internal/handler/tracked_game"
 	"go.rest.api/internal/repository/game"
+	"go.rest.api/internal/repository/tracked_game"
 	"go.rest.api/internal/repository/user"
 	"go.rest.api/internal/router"
 	"go.rest.api/internal/server"
 	"go.rest.api/internal/service/game"
+	"go.rest.api/internal/service/tracked_game"
 )
 
 // Injectors from wire.go:
@@ -31,7 +34,10 @@ func Bootstrap() (*server.Server, error) {
 	gamerepoRepository := gamerepo.New(sqlDB)
 	service := gameservice.New(steamClient, gamerepoRepository)
 	handler := gamehandler.New(service)
-	mux := router.New(repository, handler)
+	trackedgamerepoRepository := trackedgamerepo.New(sqlDB)
+	trackedgameserviceService := trackedgameservice.New(trackedgamerepoRepository)
+	trackedgamehandlerHandler := trackedgamehandler.New(trackedgameserviceService)
+	mux := router.New(repository, handler, trackedgamehandlerHandler)
 	serverServer := server.New(configConfig, mux)
 	return serverServer, nil
 }
