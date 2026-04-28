@@ -4,12 +4,14 @@ import (
 	"github.com/google/wire"
 	"go.rest.api/internal/client"
 	gamehandler "go.rest.api/internal/handler/game"
+	trackedgamehandler "go.rest.api/internal/handler/tracked_game"
 	gamerepo "go.rest.api/internal/repository/game"
 	trackedgamerepo "go.rest.api/internal/repository/tracked_game"
 	userrepo "go.rest.api/internal/repository/user"
 	"go.rest.api/internal/router"
 	"go.rest.api/internal/server"
 	gameservice "go.rest.api/internal/service/game"
+	trackedgameservice "go.rest.api/internal/service/tracked_game"
 )
 
 var repoSet = wire.NewSet(
@@ -29,6 +31,8 @@ var srvSet = wire.NewSet(
 var serviceSet = wire.NewSet(
 	gameservice.New,
 	wire.Bind(new(gamehandler.GameService), new(*gameservice.Service)),
+	trackedgameservice.New,
+	wire.Bind(new(trackedgamehandler.TrackedGameService), new(*trackedgameservice.Service)),
 )
 
 var clientSet = wire.NewSet(
@@ -38,4 +42,5 @@ var clientSet = wire.NewSet(
 
 var handlerSet = wire.NewSet(
 	gamehandler.New,
+	trackedgamehandler.New,
 )
