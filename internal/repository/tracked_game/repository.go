@@ -12,7 +12,7 @@ type Repository struct {
 }
 
 type TrackingRepository interface {
-	Add(ctx context.Context, userID, gameID int) (*model.TrackedGame, error)
+	Add(ctx context.Context, userID, gameID int, price *float64) (*model.TrackedGame, error)
 	Remove(ctx context.Context, userID, gameID int) error
 }
 

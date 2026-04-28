@@ -11,7 +11,7 @@ type Handler struct {
 }
 
 type TrackedGameService interface {
-	Track(ctx context.Context, userID, gameID int) (*model.TrackedGame, error)
+	Track(ctx context.Context, userID, gameID int, price *float64) (*model.TrackedGame, error)
 	Untrack(ctx context.Context, userID, gameID int) error
 }
 

@@ -15,8 +15,8 @@ func New(repo trackedgamerepo.TrackingRepository) *Service {
 	return &Service{repo: repo}
 }
 
-func (s *Service) Track(ctx context.Context, userID, gameID int) (*model.TrackedGame, error) {
-	return s.repo.Add(ctx, userID, gameID)
+func (s *Service) Track(ctx context.Context, userID, gameID int, price *float64) (*model.TrackedGame, error) {
+	return s.repo.Add(ctx, userID, gameID, price)
 }
 
 func (s *Service) Untrack(ctx context.Context, userID, gameID int) error {

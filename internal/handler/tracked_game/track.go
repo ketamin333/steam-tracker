@@ -11,7 +11,8 @@ import (
 )
 
 type trackRequest struct {
-	GameID int `json:"game_id"`
+	GameID int      `json:"game_id"`
+	Price  *float64 `json:"price"`
 }
 
 func (h *Handler) Track(w http.ResponseWriter, r *http.Request) error {
@@ -27,7 +28,7 @@ func (h *Handler) Track(w http.ResponseWriter, r *http.Request) error {
 
 	userID := r.Context().Value(middleware.UserIDKey).(int)
 
-	g, err := h.svc.Track(r.Context(), userID, req.GameID)
+	g, err := h.svc.Track(r.Context(), userID, req.GameID, req.Price)
 	if errors.Is(err, apperr.ErrAlreadyExists) {
 		return httputil.Error(w, http.StatusConflict, "game already tracked")
 	}
