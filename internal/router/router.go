@@ -26,8 +26,9 @@ func New(
 		r.Get("/games", httputil.Wrap(gameHandler.Search))
 
 		r.Route("/user/games", func(r chi.Router) {
-			r.Post("/", httputil.Wrap(trackedGameHandler.Track))
-			r.Delete("/{id}", httputil.Wrap(trackedGameHandler.Untrack))
+			r.Post("/", httputil.Wrap(trackedGameHandler.Create))
+			r.Patch("/{id}", httputil.Wrap(trackedGameHandler.Update))
+			r.Delete("/{id}", httputil.Wrap(trackedGameHandler.Delete))
 		})
 	})
 

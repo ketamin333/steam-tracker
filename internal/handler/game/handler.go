@@ -11,7 +11,7 @@ type Handler struct {
 }
 
 type GameService interface {
-	Search(ctx context.Context, query string) ([]model.Game, error)
+	Search(ctx context.Context, user *model.User, query string) ([]model.Game, error)
 }
 
 func New(svc GameService) *Handler {

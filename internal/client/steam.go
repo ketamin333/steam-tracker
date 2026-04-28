@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+
+	"go.rest.api/internal/model"
 )
 
 type SteamClient struct {
@@ -30,7 +32,7 @@ type SearchResponse struct {
 }
 
 type SteamSearcher interface {
-	Search(ctx context.Context, query string) ([]SearchResult, error)
+	Search(ctx context.Context, user *model.User, query string) ([]SearchResult, error)
 }
 
 var _ SteamSearcher = (*SteamClient)(nil)
@@ -43,11 +45,11 @@ func NewClient() *SteamClient {
 	}
 }
 
-func (s *SteamClient) Search(ctx context.Context, query string) ([]SearchResult, error) {
+func (s *SteamClient) Search(ctx context.Context, user *model.User, query string) ([]SearchResult, error) {
 	params := url.Values{
 		"term": {query},
 		"l":    {"english"},
-		"cc":   {"US"},
+		"cc":   {user.Lang},
 	}
 
 	fullURL := "https://store.steampowered.com/api/storesearch?" + params.Encode()

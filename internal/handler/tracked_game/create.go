@@ -8,6 +8,7 @@ import (
 	"go.rest.api/internal/apperr"
 	"go.rest.api/internal/httputil"
 	"go.rest.api/internal/middleware"
+	"go.rest.api/internal/model"
 )
 
 type trackRequest struct {
@@ -15,7 +16,7 @@ type trackRequest struct {
 	Price  *float64 `json:"price"`
 }
 
-func (h *Handler) Track(w http.ResponseWriter, r *http.Request) error {
+func (h *Handler) Create(w http.ResponseWriter, r *http.Request) error {
 	var req trackRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -26,9 +27,9 @@ func (h *Handler) Track(w http.ResponseWriter, r *http.Request) error {
 		return httputil.Error(w, http.StatusBadRequest, "game_id is required")
 	}
 
-	userID := r.Context().Value(middleware.UserIDKey).(int)
+	user := r.Context().Value(middleware.UserKey).(*model.User)
 
-	g, err := h.svc.Track(r.Context(), userID, req.GameID, req.Price)
+	g, err := h.svc.Create(r.Context(), user, req.GameID, req.Price)
 	if errors.Is(err, apperr.ErrAlreadyExists) {
 		return httputil.Error(w, http.StatusConflict, "game already tracked")
 	}

@@ -1,6 +1,7 @@
 package trackedgamehandler
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
@@ -9,16 +10,28 @@ import (
 	"go.rest.api/internal/apperr"
 	"go.rest.api/internal/httputil"
 	"go.rest.api/internal/middleware"
+	"go.rest.api/internal/model"
 )
 
-func (h *Handler) Untrack(w http.ResponseWriter, r *http.Request) error {
+type updateRequest struct {
+	Price *float64 `json:"price"`
+}
+
+func (h *Handler) Update(w http.ResponseWriter, r *http.Request) error {
+	var req updateRequest
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		return httputil.Error(w, http.StatusBadRequest, "invalid request body")
+	}
+
 	gameID, err := strconv.Atoi(chi.URLParam(r, "id"))
+
 	if err != nil || gameID == 0 {
 		return httputil.Error(w, http.StatusBadRequest, "invalid game id")
 	}
 
-	userID := r.Context().Value(middleware.UserIDKey).(int)
-	err = h.svc.Untrack(r.Context(), userID, gameID)
+	user := r.Context().Value(middleware.UserKey).(*model.User)
+	g, err := h.svc.Update(r.Context(), user, gameID, req.Price)
 
 	if errors.Is(err, apperr.ErrNotFound) {
 		return httputil.Error(w, http.StatusNotFound, "game not found")
@@ -28,5 +41,5 @@ func (h *Handler) Untrack(w http.ResponseWriter, r *http.Request) error {
 		return httputil.Error(w, http.StatusInternalServerError, "server error")
 	}
 
-	return httputil.JSON(w, http.StatusNoContent, nil)
+	return httputil.JSON(w, http.StatusOK, g)
 }

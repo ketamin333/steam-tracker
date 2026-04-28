@@ -13,7 +13,7 @@ import (
 
 type contextKey string
 
-const UserIDKey contextKey = "user_id"
+const UserKey contextKey = "user"
 
 func Auth(repo userrepo.UserRepository) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
@@ -43,7 +43,7 @@ func Auth(repo userrepo.UserRepository) func(http.Handler) http.Handler {
 				return
 			}
 
-			ctx := context.WithValue(r.Context(), UserIDKey, user.ID)
+			ctx := context.WithValue(r.Context(), UserKey, user)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}

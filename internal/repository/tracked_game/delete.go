@@ -4,12 +4,13 @@ import (
 	"context"
 
 	"go.rest.api/internal/apperr"
+	"go.rest.api/internal/model"
 )
 
-func (r *Repository) Remove(ctx context.Context, userID, gameID int) error {
+func (r *Repository) Delete(ctx context.Context, user *model.User, gameID int) error {
 	result, err := r.db.ExecContext(ctx,
 		`DELETE FROM tracked_games WHERE user_id = $1 AND game_id = $2`,
-		userID, gameID,
+		user.ID, gameID,
 	)
 
 	if err != nil {

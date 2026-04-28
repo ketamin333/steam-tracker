@@ -20,8 +20,8 @@ func New(steam client.SteamSearcher, repo gamerepo.GameRepository) *Service {
 	}
 }
 
-func (s *Service) Search(ctx context.Context, query string) ([]model.Game, error) {
-	g, err := s.steam.Search(ctx, query)
+func (s *Service) Search(ctx context.Context, user *model.User, query string) ([]model.Game, error) {
+	g, err := s.steam.Search(ctx, user, query)
 	if err != nil {
 		return nil, err
 	}
