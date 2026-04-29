@@ -1,19 +1,20 @@
 package app
 
 import (
+	"steam-tracker/internal/client/steam"
+	gamehandler "steam-tracker/internal/handler/game"
+	trackedgamehandler "steam-tracker/internal/handler/tracked_game"
+	gamerepo "steam-tracker/internal/repository/game"
+	pricehistoryrepo "steam-tracker/internal/repository/price_history"
+	trackedgamerepo "steam-tracker/internal/repository/tracked_game"
+	userrepo "steam-tracker/internal/repository/user"
+	"steam-tracker/internal/router"
+	"steam-tracker/internal/server"
+	gameservice "steam-tracker/internal/service/game"
+	pricehistoryservice "steam-tracker/internal/service/price_history"
+	trackedgameservice "steam-tracker/internal/service/tracked_game"
+
 	"github.com/google/wire"
-	"go.rest.api/internal/client/steam"
-	gamehandler "go.rest.api/internal/handler/game"
-	trackedgamehandler "go.rest.api/internal/handler/tracked_game"
-	gamerepo "go.rest.api/internal/repository/game"
-	pricehistoryrepo "go.rest.api/internal/repository/price_history"
-	trackedgamerepo "go.rest.api/internal/repository/tracked_game"
-	userrepo "go.rest.api/internal/repository/user"
-	"go.rest.api/internal/router"
-	"go.rest.api/internal/server"
-	gameservice "go.rest.api/internal/service/game"
-	pricehistoryservice "go.rest.api/internal/service/price_history"
-	trackedgameservice "go.rest.api/internal/service/tracked_game"
 )
 
 var repoSet = wire.NewSet(

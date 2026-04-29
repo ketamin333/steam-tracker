@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	"go.rest.api/internal/apperr"
-	"go.rest.api/internal/httputil"
-	userrepo "go.rest.api/internal/repository/user"
+	"steam-tracker/internal/apperr"
+	"steam-tracker/internal/httputil"
+	userrepo "steam-tracker/internal/repository/user"
 )
 
 type contextKey string

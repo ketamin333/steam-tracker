@@ -1,7 +1,7 @@
 package trackedgameservice
 
 import (
-	trackedgamerepo "go.rest.api/internal/repository/tracked_game"
+	trackedgamerepo "steam-tracker/internal/repository/tracked_game"
 )
 
 type Service struct {

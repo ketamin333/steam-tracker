@@ -3,7 +3,7 @@ package trackedgamehandler
 import (
 	"context"
 
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/model"
 )
 
 type Handler struct {

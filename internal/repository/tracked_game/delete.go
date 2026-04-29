@@ -3,8 +3,8 @@ package trackedgamerepo
 import (
 	"context"
 
-	"go.rest.api/internal/apperr"
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/apperr"
+	"steam-tracker/internal/model"
 )
 
 func (r *Repository) Delete(ctx context.Context, user *model.User, gameID int) error {

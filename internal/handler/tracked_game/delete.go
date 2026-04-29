@@ -5,11 +5,12 @@ import (
 	"net/http"
 	"strconv"
 
+	"steam-tracker/internal/apperr"
+	"steam-tracker/internal/httputil"
+	"steam-tracker/internal/middleware"
+	"steam-tracker/internal/model"
+
 	"github.com/go-chi/chi/v5"
-	"go.rest.api/internal/apperr"
-	"go.rest.api/internal/httputil"
-	"go.rest.api/internal/middleware"
-	"go.rest.api/internal/model"
 )
 
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) error {

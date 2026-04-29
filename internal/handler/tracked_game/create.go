@@ -5,10 +5,10 @@ import (
 	"errors"
 	"net/http"
 
-	"go.rest.api/internal/apperr"
-	"go.rest.api/internal/httputil"
-	"go.rest.api/internal/middleware"
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/apperr"
+	"steam-tracker/internal/httputil"
+	"steam-tracker/internal/middleware"
+	"steam-tracker/internal/model"
 )
 
 type trackRequest struct {

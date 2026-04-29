@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"errors"
 
-	"go.rest.api/internal/apperr"
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/apperr"
+	"steam-tracker/internal/model"
 )
 
 func (r *Repository) GetByAPIKey(ctx context.Context, apiKey string) (*model.User, error) {

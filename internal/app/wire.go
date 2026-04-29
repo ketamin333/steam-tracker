@@ -3,11 +3,12 @@
 package app
 
 import (
+	"steam-tracker/internal/config"
+	"steam-tracker/internal/db"
+	"steam-tracker/internal/server"
+	pricehistoryservice "steam-tracker/internal/service/price_history"
+
 	"github.com/google/wire"
-	"go.rest.api/internal/config"
-	"go.rest.api/internal/db"
-	"go.rest.api/internal/server"
-	pricehistoryservice "go.rest.api/internal/service/price_history"
 )
 
 type App struct {

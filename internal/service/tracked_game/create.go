@@ -3,7 +3,7 @@ package trackedgameservice
 import (
 	"context"
 
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/model"
 )
 
 func (s *Service) Create(ctx context.Context, user *model.User, gameID int, price *float64) (*model.TrackedGame, error) {

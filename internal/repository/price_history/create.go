@@ -3,7 +3,7 @@ package pricehistoryrepo
 import (
 	"context"
 
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/model"
 )
 
 func (r *Repository) Create(ctx context.Context, ph *model.PriceHistory) (*model.PriceHistory, error) {

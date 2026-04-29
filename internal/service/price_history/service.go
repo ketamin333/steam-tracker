@@ -1,9 +1,9 @@
 package pricehistoryservice
 
 import (
-	"go.rest.api/internal/client/steam"
-	pricehistoryrepo "go.rest.api/internal/repository/price_history"
-	trackedgamerepo "go.rest.api/internal/repository/tracked_game"
+	"steam-tracker/internal/client/steam"
+	pricehistoryrepo "steam-tracker/internal/repository/price_history"
+	trackedgamerepo "steam-tracker/internal/repository/tracked_game"
 )
 
 type Service struct {

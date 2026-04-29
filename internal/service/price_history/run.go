@@ -4,8 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	"go.rest.api/internal/model"
-	trackedgamerepo "go.rest.api/internal/repository/tracked_game"
+	"steam-tracker/internal/model"
+	trackedgamerepo "steam-tracker/internal/repository/tracked_game"
 )
 
 func (s *Service) Run(ctx context.Context) error {

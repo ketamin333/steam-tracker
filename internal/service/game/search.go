@@ -3,7 +3,7 @@ package gameservice
 import (
 	"context"
 
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/model"
 )
 
 func (s *Service) Search(ctx context.Context, user *model.User, query string) ([]model.Game, error) {

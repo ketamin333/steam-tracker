@@ -4,8 +4,9 @@ import (
 	"log/slog"
 	"os"
 
+	"steam-tracker/internal/app"
+
 	"github.com/joho/godotenv"
-	"go.rest.api/internal/app"
 )
 
 func main() {

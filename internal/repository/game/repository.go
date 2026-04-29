@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/model"
 )
 
 type Repository struct {

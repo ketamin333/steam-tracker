@@ -3,9 +3,9 @@ package gamehandler
 import (
 	"net/http"
 
-	"go.rest.api/internal/httputil"
-	"go.rest.api/internal/middleware"
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/httputil"
+	"steam-tracker/internal/middleware"
+	"steam-tracker/internal/model"
 )
 
 func (h *Handler) Search(w http.ResponseWriter, r *http.Request) error {

@@ -3,7 +3,7 @@ package gamerepo
 import (
 	"context"
 
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/model"
 )
 
 func (r *Repository) Upsert(ctx context.Context, g *model.Game) error {

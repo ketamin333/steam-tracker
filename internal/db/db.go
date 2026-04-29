@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	"steam-tracker/internal/config"
+
 	_ "github.com/lib/pq"
-	"go.rest.api/internal/config"
 )
 
 func New(cfg *config.Config) (*sql.DB, error) {

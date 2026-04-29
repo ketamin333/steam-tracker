@@ -3,7 +3,7 @@ package trackedgameservice
 import (
 	"context"
 
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/model"
 )
 
 func (s *Service) Delete(ctx context.Context, user *model.User, gameID int) error {

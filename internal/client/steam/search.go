@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/model"
 )
 
 type SearchResult struct {

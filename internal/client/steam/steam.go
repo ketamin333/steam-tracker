@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"go.rest.api/internal/model"
+	"steam-tracker/internal/model"
 )
 
 type Steam struct {

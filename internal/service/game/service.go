@@ -1,8 +1,8 @@
 package gameservice
 
 import (
-	"go.rest.api/internal/client/steam"
-	gamerepo "go.rest.api/internal/repository/game"
+	"steam-tracker/internal/client/steam"
+	gamerepo "steam-tracker/internal/repository/game"
 )
 
 type Service struct {

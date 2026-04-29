@@ -7,20 +7,20 @@
 package app
 
 import (
-	"go.rest.api/internal/client/steam"
-	"go.rest.api/internal/config"
-	"go.rest.api/internal/db"
-	"go.rest.api/internal/handler/game"
-	"go.rest.api/internal/handler/tracked_game"
-	"go.rest.api/internal/repository/game"
-	"go.rest.api/internal/repository/price_history"
-	"go.rest.api/internal/repository/tracked_game"
-	"go.rest.api/internal/repository/user"
-	"go.rest.api/internal/router"
-	"go.rest.api/internal/server"
-	"go.rest.api/internal/service/game"
-	"go.rest.api/internal/service/price_history"
-	"go.rest.api/internal/service/tracked_game"
+	"steam-tracker/internal/client/steam"
+	"steam-tracker/internal/config"
+	"steam-tracker/internal/db"
+	"steam-tracker/internal/handler/game"
+	"steam-tracker/internal/handler/tracked_game"
+	"steam-tracker/internal/repository/game"
+	"steam-tracker/internal/repository/price_history"
+	"steam-tracker/internal/repository/tracked_game"
+	"steam-tracker/internal/repository/user"
+	"steam-tracker/internal/router"
+	"steam-tracker/internal/server"
+	"steam-tracker/internal/service/game"
+	"steam-tracker/internal/service/price_history"
+	"steam-tracker/internal/service/tracked_game"
 )
 
 // Injectors from wire.go:

@@ -1,13 +1,14 @@
 package router
 
 import (
+	gamehandler "steam-tracker/internal/handler/game"
+	trackedgamehandler "steam-tracker/internal/handler/tracked_game"
+	"steam-tracker/internal/httputil"
+	"steam-tracker/internal/middleware"
+	userrepo "steam-tracker/internal/repository/user"
+
 	"github.com/go-chi/chi/v5"
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
-	gamehandler "go.rest.api/internal/handler/game"
-	trackedgamehandler "go.rest.api/internal/handler/tracked_game"
-	"go.rest.api/internal/httputil"
-	"go.rest.api/internal/middleware"
-	userrepo "go.rest.api/internal/repository/user"
 )
 
 func New(
