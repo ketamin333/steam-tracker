@@ -18,7 +18,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := srv.Run(); err != nil {
+	if err := srv.Start(); err != nil {
 		slog.Error("server failed", "err", err)
 		os.Exit(1)
 	}

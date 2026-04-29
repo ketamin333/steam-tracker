@@ -2,12 +2,15 @@ package pricehistoryservice
 
 import (
 	"context"
+	"log/slog"
 
 	"go.rest.api/internal/model"
 	trackedgamerepo "go.rest.api/internal/repository/tracked_game"
 )
 
 func (s *Service) Run(ctx context.Context) error {
+	slog.Info("run price history service")
+
 	tg, err := s.trackedGameRepo.GetAll(ctx)
 
 	if err != nil {
@@ -29,7 +32,6 @@ func (s *Service) Run(ctx context.Context) error {
 		}
 
 		po, err := s.steam.AppDetails(ctx, lang, ids)
-
 		if err != nil {
 			continue
 		}
@@ -56,6 +58,8 @@ func (s *Service) Run(ctx context.Context) error {
 			}
 		}
 	}
+
+	slog.Info("ended price history service", "grouped", grouped)
 
 	return nil
 }

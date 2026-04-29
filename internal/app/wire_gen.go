@@ -13,17 +13,19 @@ import (
 	"go.rest.api/internal/handler/game"
 	"go.rest.api/internal/handler/tracked_game"
 	"go.rest.api/internal/repository/game"
+	"go.rest.api/internal/repository/price_history"
 	"go.rest.api/internal/repository/tracked_game"
 	"go.rest.api/internal/repository/user"
 	"go.rest.api/internal/router"
 	"go.rest.api/internal/server"
 	"go.rest.api/internal/service/game"
+	"go.rest.api/internal/service/price_history"
 	"go.rest.api/internal/service/tracked_game"
 )
 
 // Injectors from wire.go:
 
-func Bootstrap() (*server.Server, error) {
+func Bootstrap() (*App, error) {
 	configConfig := config.New()
 	sqlDB, err := db.New(configConfig)
 	if err != nil {
@@ -39,5 +41,18 @@ func Bootstrap() (*server.Server, error) {
 	trackedgamehandlerHandler := trackedgamehandler.New(trackedgameserviceService)
 	mux := router.New(repository, handler, trackedgamehandlerHandler)
 	serverServer := server.New(configConfig, mux)
-	return serverServer, nil
+	pricehistoryrepoRepository := pricehistoryrepo.New(sqlDB)
+	pricehistoryserviceService := pricehistoryservice.New(trackedgamerepoRepository, pricehistoryrepoRepository, steamSteam)
+	app := &App{
+		Server:  serverServer,
+		Tracker: pricehistoryserviceService,
+	}
+	return app, nil
+}
+
+// wire.go:
+
+type App struct {
+	Server  *server.Server
+	Tracker *pricehistoryservice.Service
 }
