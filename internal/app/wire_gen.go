@@ -12,6 +12,7 @@ import (
 	"steam-tracker/internal/db"
 	"steam-tracker/internal/handler/game"
 	"steam-tracker/internal/handler/tracked_game"
+	"steam-tracker/internal/queue"
 	"steam-tracker/internal/repository/game"
 	"steam-tracker/internal/repository/price_history"
 	"steam-tracker/internal/repository/tracked_game"
@@ -42,7 +43,8 @@ func Bootstrap() (*App, error) {
 	mux := router.New(repository, handler, trackedgamehandlerHandler)
 	serverServer := server.New(configConfig, mux)
 	pricehistoryrepoRepository := pricehistoryrepo.New(sqlDB)
-	pricehistoryserviceService := pricehistoryservice.New(trackedgamerepoRepository, pricehistoryrepoRepository, steamSteam)
+	client := queue.New(configConfig)
+	pricehistoryserviceService := pricehistoryservice.New(trackedgamerepoRepository, pricehistoryrepoRepository, steamSteam, client)
 	app := &App{
 		Server:  serverServer,
 		Tracker: pricehistoryserviceService,

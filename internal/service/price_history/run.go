@@ -3,63 +3,75 @@ package pricehistoryservice
 import (
 	"context"
 	"log/slog"
-
 	"steam-tracker/internal/model"
+	"steam-tracker/internal/queue"
 	trackedgamerepo "steam-tracker/internal/repository/tracked_game"
 )
 
 func (s *Service) Run(ctx context.Context) error {
 	slog.Info("run price history service")
 
-	tg, err := s.trackedGameRepo.GetAll(ctx)
-
+	trackedGameRows, err := s.trackedGameRepo.GetAll(ctx)
 	if err != nil {
 		return err
 	}
 
-	grouped := make(map[string][]trackedgamerepo.TrackedGameRow)
-	for _, row := range tg {
-		grouped[row.Lang] = append(grouped[row.Lang], row)
+	groupedLang := make(map[string][]trackedgamerepo.TrackedGameRow)
+	for _, row := range trackedGameRows {
+		groupedLang[row.User.Lang] = append(groupedLang[row.User.Lang], row)
 	}
 
-	for lang, rows := range grouped {
+	for lang, rows := range groupedLang {
 		ids := make([]int, len(rows))
-		steamGameIDs := make(map[int]int)
+		steamRows := make(map[int]trackedgamerepo.TrackedGameRow)
 
 		for i, row := range rows {
-			ids[i] = row.SteamAppID
-			steamGameIDs[row.SteamAppID] = row.GameID
+			ids[i] = row.Game.SteamAppID
+			steamRows[row.Game.SteamAppID] = row
 		}
 
-		po, err := s.steam.AppDetails(ctx, lang, ids)
+		pos, err := s.steam.AppDetails(ctx, lang, ids)
 		if err != nil {
 			continue
 		}
 
-		for steamAppID, price := range po {
-			gameID, ok := steamGameIDs[steamAppID]
-
+		for sgID, po := range pos {
+			row, ok := steamRows[sgID]
 			if !ok {
 				continue
 			}
 
-			ph := model.PriceHistory{
-				GameID:          gameID,
-				Lang:            lang,
-				Price:           float64(price.Final) / 100,
-				Currency:        price.Currency,
-				DiscountPercent: price.DiscountPercent,
-			}
-
-			_, err := s.priceHistoryRepo.Create(ctx, &ph)
+			ph, err := s.priceHistoryRepo.Create(
+				ctx,
+				&model.PriceHistory{
+					GameID:          row.Game.ID,
+					Lang:            row.User.Lang,
+					Price:           float64(po.Final) / 100,
+					Currency:        po.Currency,
+					DiscountPercent: po.DiscountPercent,
+				},
+			)
 
 			if err != nil {
 				continue
 			}
+
+			if row.TargetPrice != nil && ph.Price <= *row.TargetPrice {
+				jp := queue.NotifyJobPayload{
+					User:         row.User,
+					Game:         row.Game,
+					TargetPrice:  *row.TargetPrice,
+					CurrentPrice: ph.Price,
+				}
+
+				if err := s.notifyJob.Enqueue(ctx, jp); err != nil {
+					continue
+				}
+			}
 		}
 	}
 
-	slog.Info("ended price history service", "grouped", grouped)
+	slog.Info("ended price history service")
 
 	return nil
 }

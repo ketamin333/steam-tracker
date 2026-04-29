@@ -4,6 +4,7 @@ import (
 	"steam-tracker/internal/client/steam"
 	gamehandler "steam-tracker/internal/handler/game"
 	trackedgamehandler "steam-tracker/internal/handler/tracked_game"
+	"steam-tracker/internal/queue"
 	gamerepo "steam-tracker/internal/repository/game"
 	pricehistoryrepo "steam-tracker/internal/repository/price_history"
 	trackedgamerepo "steam-tracker/internal/repository/tracked_game"
@@ -49,4 +50,8 @@ var clientSet = wire.NewSet(
 var handlerSet = wire.NewSet(
 	gamehandler.New,
 	trackedgamehandler.New,
+)
+
+var queueSet = wire.NewSet(
+	queue.New,
 )

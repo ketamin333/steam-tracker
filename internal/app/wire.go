@@ -25,6 +25,7 @@ func Bootstrap() (*App, error) {
 		serviceSet,
 		clientSet,
 		handlerSet,
+		queueSet,
 		wire.Struct(new(App), "*"),
 	)
 

@@ -11,6 +11,7 @@ type Config struct {
 	DBName        string
 	DBSSLMode     string
 	RedisHost     string
+	RedisPort     string
 	RedisPassword string
 }
 
@@ -18,12 +19,13 @@ func New() *Config {
 	return &Config{
 		ServerPort:    env("SERVER_PORT", "8080"),
 		DBHost:        env("DB_HOST", "db"),
-		DBPort:        env("DB_PORT", ""),
+		DBPort:        env("DB_PORT", "5432"),
 		DBUser:        env("DB_USER", ""),
 		DBPassword:    env("DB_PASSWORD", ""),
 		DBName:        env("DB_NAME", ""),
 		DBSSLMode:     env("DB_SSL_MODE", ""),
 		RedisHost:     env("REDIS_HOST", "redis"),
+		RedisPort:     env("REDIS_PORT", "6379"),
 		RedisPassword: env("REDIS_PASSWORD", ""),
 	}
 }

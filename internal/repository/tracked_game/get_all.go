@@ -2,20 +2,24 @@ package trackedgamerepo
 
 import (
 	"context"
+	"steam-tracker/internal/model"
 )
 
 type TrackedGameRow struct {
 	ID          int
-	UserID      int
-	GameID      int
-	SteamAppID  int
-	Lang        string
+	User        model.User
+	Game        model.Game
 	TargetPrice *float64
 }
 
 func (r *Repository) GetAll(ctx context.Context) ([]TrackedGameRow, error) {
 	rows, err := r.db.QueryContext(ctx,
-		`SELECT tracked_games.id, user_id, game_id, steam_app_id, lang, target_price FROM tracked_games
+		`SELECT 
+    		tracked_games.id, 
+       		users.id, users.lang, users.created_at,
+       		games.id, games.steam_app_id, games.name, games.cover_url, games.created_at, games.updated_at,
+       		tracked_games.target_price
+        FROM tracked_games
 		INNER JOIN games ON tracked_games.game_id = games.id
 		INNER JOIN users ON tracked_games.user_id = users.id`,
 	)
@@ -30,7 +34,19 @@ func (r *Repository) GetAll(ctx context.Context) ([]TrackedGameRow, error) {
 	for rows.Next() {
 		var row TrackedGameRow
 
-		err := rows.Scan(&row.ID, &row.UserID, &row.GameID, &row.SteamAppID, &row.Lang, &row.TargetPrice)
+		err := rows.Scan(
+			&row.ID,
+			&row.User.ID,
+			&row.User.Lang,
+			&row.User.CreatedAt,
+			&row.Game.ID,
+			&row.Game.SteamAppID,
+			&row.Game.Name,
+			&row.Game.CoverURL,
+			&row.Game.CreatedAt,
+			&row.Game.UpdatedAt,
+			&row.TargetPrice,
+		)
 
 		if err != nil {
 			return nil, err
