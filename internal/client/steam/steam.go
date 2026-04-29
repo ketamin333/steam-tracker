@@ -15,7 +15,7 @@ type Steam struct {
 
 type SteamClient interface {
 	Search(ctx context.Context, user *model.User, query string) ([]SearchResult, error)
-	AppDetails(ctx context.Context, user *model.User, steamAppID []int) (map[int]PriceOverview, error)
+	AppDetails(ctx context.Context, lang string, steamAppID []int) (map[int]PriceOverview, error)
 }
 
 var _ SteamClient = (*Steam)(nil)

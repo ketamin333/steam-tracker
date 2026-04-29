@@ -12,6 +12,7 @@ import (
 	"go.rest.api/internal/router"
 	"go.rest.api/internal/server"
 	gameservice "go.rest.api/internal/service/game"
+	pricehistoryservice "go.rest.api/internal/service/price_history"
 	trackedgameservice "go.rest.api/internal/service/tracked_game"
 )
 
@@ -36,6 +37,7 @@ var serviceSet = wire.NewSet(
 	wire.Bind(new(gamehandler.GameService), new(*gameservice.Service)),
 	trackedgameservice.New,
 	wire.Bind(new(trackedgamehandler.TrackedGameService), new(*trackedgameservice.Service)),
+	pricehistoryservice.New,
 )
 
 var clientSet = wire.NewSet(

@@ -8,8 +8,6 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
-
-	"go.rest.api/internal/model"
 )
 
 type AppDetailsResponse struct {
@@ -30,7 +28,7 @@ type PriceOverview struct {
 	FinalFormatted   *string `json:"final_formatted"`
 }
 
-func (s *Steam) AppDetails(ctx context.Context, user *model.User, steamAppID []int) (map[int]PriceOverview, error) {
+func (s *Steam) AppDetails(ctx context.Context, lang string, steamAppID []int) (map[int]PriceOverview, error) {
 	ids := make([]string, len(steamAppID))
 	for i, id := range steamAppID {
 		ids[i] = strconv.Itoa(id)
@@ -38,7 +36,7 @@ func (s *Steam) AppDetails(ctx context.Context, user *model.User, steamAppID []i
 
 	params := url.Values{
 		"appids":  {strings.Join(ids, ",")},
-		"cc":      {user.Lang},
+		"cc":      {lang},
 		"filters": {"price_overview"},
 	}
 
