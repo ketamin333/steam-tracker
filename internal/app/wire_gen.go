@@ -7,7 +7,7 @@
 package app
 
 import (
-	"go.rest.api/internal/client"
+	"go.rest.api/internal/client/steam"
 	"go.rest.api/internal/config"
 	"go.rest.api/internal/db"
 	"go.rest.api/internal/handler/game"
@@ -30,9 +30,9 @@ func Bootstrap() (*server.Server, error) {
 		return nil, err
 	}
 	repository := userrepo.New(sqlDB)
-	steamClient := client.NewClient()
+	steamSteam := steam.New()
 	gamerepoRepository := gamerepo.New(sqlDB)
-	service := gameservice.New(steamClient, gamerepoRepository)
+	service := gameservice.New(steamSteam, gamerepoRepository)
 	handler := gamehandler.New(service)
 	trackedgamerepoRepository := trackedgamerepo.New(sqlDB)
 	trackedgameserviceService := trackedgameservice.New(trackedgamerepoRepository)

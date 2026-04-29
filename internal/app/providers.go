@@ -6,6 +6,7 @@ import (
 	gamehandler "go.rest.api/internal/handler/game"
 	trackedgamehandler "go.rest.api/internal/handler/tracked_game"
 	gamerepo "go.rest.api/internal/repository/game"
+	pricehistoryrepo "go.rest.api/internal/repository/price_history"
 	trackedgamerepo "go.rest.api/internal/repository/tracked_game"
 	userrepo "go.rest.api/internal/repository/user"
 	"go.rest.api/internal/router"
@@ -21,6 +22,8 @@ var repoSet = wire.NewSet(
 	wire.Bind(new(gamerepo.GameRepository), new(*gamerepo.Repository)),
 	trackedgamerepo.New,
 	wire.Bind(new(trackedgamerepo.TrackingRepository), new(*trackedgamerepo.Repository)),
+	pricehistoryrepo.New,
+	wire.Bind(new(pricehistoryrepo.PriceHistoryRepository), new(*pricehistoryrepo.Repository)),
 )
 
 var srvSet = wire.NewSet(
