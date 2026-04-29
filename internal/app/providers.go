@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/google/wire"
-	"go.rest.api/internal/client"
+	"go.rest.api/internal/client/steam"
 	gamehandler "go.rest.api/internal/handler/game"
 	trackedgamehandler "go.rest.api/internal/handler/tracked_game"
 	gamerepo "go.rest.api/internal/repository/game"
@@ -36,8 +36,8 @@ var serviceSet = wire.NewSet(
 )
 
 var clientSet = wire.NewSet(
-	client.NewClient,
-	wire.Bind(new(client.SteamSearcher), new(*client.SteamClient)),
+	steam.New,
+	wire.Bind(new(steam.SteamClient), new(*steam.Steam)),
 )
 
 var handlerSet = wire.NewSet(

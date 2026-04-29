@@ -3,17 +3,17 @@ package gameservice
 import (
 	"context"
 
-	"go.rest.api/internal/client"
+	"go.rest.api/internal/client/steam"
 	"go.rest.api/internal/model"
 	gamerepo "go.rest.api/internal/repository/game"
 )
 
 type Service struct {
-	steam client.SteamSearcher
+	steam steam.SteamClient
 	repo  gamerepo.GameRepository
 }
 
-func New(steam client.SteamSearcher, repo gamerepo.GameRepository) *Service {
+func New(steam steam.SteamClient, repo gamerepo.GameRepository) *Service {
 	return &Service{
 		steam: steam,
 		repo:  repo,
