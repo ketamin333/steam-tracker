@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Price Changed Alert</title>
+</head>
+<body>
+<h2>Price Alert for {{.Game.Name}}</h2>
+<p>The price has changed below your target.</p>
+<table>
+  <tr>
+    <td><strong>Game:</strong></td>
+    <td>{{.Game.Name}}</td>
+  </tr>
+  <tr>
+    <td><strong>Old price:</strong></td>
+    <td>{{.OldPrice}}</td>
+  </tr>
+  <tr>
+    <td><strong>New price:</strong></td>
+    <td>{{.NewPrice}}</td>
+  </tr>
+</table>
+<p>Go grab it while it lasts!</p>
+</body>
+</html>

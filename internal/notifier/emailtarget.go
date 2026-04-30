@@ -18,21 +18,20 @@ func NewEmailTarget(m *mailer.Mailer) *EmailTarget {
 }
 
 //go:embed templates/emailtarget.html
-var templateEmailTarget embed.FS
+var tplEmailTarget embed.FS
 
 func (e *EmailTarget) Send(_ context.Context, pay queue.PayloadNotificationTarget) error {
 	if pay.User.Email == nil {
 		return nil
 	}
 
-	tmpl, err := template.ParseFS(templateEmailTarget, "templates/emailtarget.html")
+	tpl, err := template.ParseFS(tplEmailTarget, "templates/emailtarget.html")
 	if err != nil {
 		return err
 	}
 
 	var buf bytes.Buffer
-	err = tmpl.Execute(&buf, pay)
-	if err != nil {
+	if err := tpl.Execute(&buf, pay); err != nil {
 		return err
 	}
 
