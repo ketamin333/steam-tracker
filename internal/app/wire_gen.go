@@ -12,6 +12,7 @@ import (
 	"steam-tracker/internal/db"
 	"steam-tracker/internal/handler/game"
 	"steam-tracker/internal/handler/tracked_game"
+	"steam-tracker/internal/notifier"
 	"steam-tracker/internal/queue"
 	"steam-tracker/internal/repository/game"
 	"steam-tracker/internal/repository/price_history"
@@ -43,11 +44,14 @@ func Bootstrap() (*App, error) {
 	mux := router.New(repository, handler, trackedgamehandlerHandler)
 	serverServer := server.New(configConfig, mux)
 	pricehistoryrepoRepository := pricehistoryrepo.New(sqlDB)
-	client := queue.New(configConfig)
+	client := queue.NewClient(configConfig)
 	pricehistoryserviceService := pricehistoryservice.New(trackedgamerepoRepository, pricehistoryrepoRepository, steamSteam, client)
+	emailNotifier := notifier.NewEmail()
+	worker := queue.NewWorker(configConfig, emailNotifier)
 	app := &App{
 		Server:  serverServer,
 		Tracker: pricehistoryserviceService,
+		Worker:  worker,
 	}
 	return app, nil
 }
@@ -57,4 +61,5 @@ func Bootstrap() (*App, error) {
 type App struct {
 	Server  *server.Server
 	Tracker *pricehistoryservice.Service
+	Worker  *queue.Worker
 }

@@ -18,5 +18,11 @@ func (a *App) Start() error {
 		}
 	}()
 
+	go func() {
+		if err := a.Worker.Start(); err != nil {
+			slog.Error("app worker start failed", "err", err)
+		}
+	}()
+
 	return a.Server.Run()
 }

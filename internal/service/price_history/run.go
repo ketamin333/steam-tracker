@@ -64,7 +64,7 @@ func (s *Service) Run(ctx context.Context) error {
 					CurrentPrice: ph.Price,
 				}
 
-				if err := s.notifyJob.Enqueue(ctx, jp); err != nil {
+				if err := s.notifyJob.EnqueueNotification(ctx, jp); err != nil {
 					continue
 				}
 			}

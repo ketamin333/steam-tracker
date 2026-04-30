@@ -17,7 +17,11 @@ type NotifyJobPayload struct {
 	CurrentPrice float64
 }
 
-func (c *Client) Enqueue(ctx context.Context, payload NotifyJobPayload) error {
+type Notifier interface {
+	Send(ctx context.Context, payload NotifyJobPayload) error
+}
+
+func (c *Client) EnqueueNotification(ctx context.Context, payload NotifyJobPayload) error {
 	payloadByte, err := json.Marshal(payload)
 
 	if err != nil {
@@ -29,9 +33,5 @@ func (c *Client) Enqueue(ctx context.Context, payload NotifyJobPayload) error {
 		asynq.NewTask(TypeSendNotification, payloadByte),
 	)
 
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }

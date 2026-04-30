@@ -11,7 +11,7 @@ type Client struct {
 	client *asynq.Client
 }
 
-func New(cfg *config.Config) *Client {
+func NewClient(cfg *config.Config) *Client {
 	return &Client{
 		client: asynq.NewClient(
 			asynq.RedisClientOpt{
