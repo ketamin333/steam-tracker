@@ -12,6 +12,7 @@ import (
 	"steam-tracker/internal/db"
 	"steam-tracker/internal/handler/game"
 	"steam-tracker/internal/handler/tracked_game"
+	"steam-tracker/internal/mailer"
 	"steam-tracker/internal/notifier"
 	"steam-tracker/internal/queue"
 	"steam-tracker/internal/repository/game"
@@ -46,7 +47,8 @@ func Bootstrap() (*App, error) {
 	pricehistoryrepoRepository := pricehistoryrepo.New(sqlDB)
 	client := queue.NewClient(configConfig)
 	pricehistoryserviceService := pricehistoryservice.New(trackedgamerepoRepository, pricehistoryrepoRepository, steamSteam, client)
-	emailTarget := notifier.NewEmailTarget()
+	mailerMailer := mailer.New(configConfig)
+	emailTarget := notifier.NewEmailTarget(mailerMailer)
 	emailPriceChanged := notifier.NewEmailPriceChanged()
 	worker := queue.NewWorker(configConfig, emailTarget, emailPriceChanged)
 	app := &App{

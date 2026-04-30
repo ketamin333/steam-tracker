@@ -29,6 +29,7 @@ func Bootstrap() (*App, error) {
 		handlerSet,
 		queueSet,
 		notifierSet,
+		mailerSet,
 		wire.Struct(new(App), "*"),
 	)
 

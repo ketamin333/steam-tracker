@@ -13,6 +13,11 @@ type Config struct {
 	RedisHost     string
 	RedisPort     string
 	RedisPassword string
+	MailHost      string
+	MailPort      string
+	MailUser      string
+	MailPassword  string
+	MailFrom      string
 }
 
 func New() *Config {
@@ -27,6 +32,11 @@ func New() *Config {
 		RedisHost:     env("REDIS_HOST", "redis"),
 		RedisPort:     env("REDIS_PORT", "6379"),
 		RedisPassword: env("REDIS_PASSWORD", ""),
+		MailHost:      env("MAIL_HOST", ""),
+		MailPort:      env("MAIL_PORT", "465"),
+		MailUser:      env("MAIL_USER", ""),
+		MailPassword:  env("MAIL_PASSWORD", ""),
+		MailFrom:      env("MAIL_FROM", ""),
 	}
 }
 

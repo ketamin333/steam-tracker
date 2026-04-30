@@ -4,6 +4,7 @@ import (
 	"steam-tracker/internal/client/steam"
 	gamehandler "steam-tracker/internal/handler/game"
 	trackedgamehandler "steam-tracker/internal/handler/tracked_game"
+	"steam-tracker/internal/mailer"
 	"steam-tracker/internal/notifier"
 	"steam-tracker/internal/queue"
 	gamerepo "steam-tracker/internal/repository/game"
@@ -63,4 +64,8 @@ var notifierSet = wire.NewSet(
 	wire.Bind(new(queue.NotifierTarget), new(*notifier.EmailTarget)),
 	notifier.NewEmailPriceChanged,
 	wire.Bind(new(queue.NotifierPriceChanged), new(*notifier.EmailPriceChanged)),
+)
+
+var mailerSet = wire.NewSet(
+	mailer.New,
 )
