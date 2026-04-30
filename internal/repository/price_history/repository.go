@@ -14,6 +14,7 @@ type Repository struct {
 type PriceHistoryRepository interface {
 	GetLast(ctx context.Context, gameID int, lang string) (model.PriceHistory, error)
 	Create(ctx context.Context, ph *model.PriceHistory) (*model.PriceHistory, error)
+	GetLastForGames(ctx context.Context, gameIDs []int, lang string) ([]model.PriceHistory, error)
 }
 
 var _ PriceHistoryRepository = (*Repository)(nil)

@@ -11,19 +11,19 @@ type Service struct {
 	trackedGameRepo  trackedgamerepo.TrackingRepository
 	priceHistoryRepo pricehistoryrepo.PriceHistoryRepository
 	steam            steam.SteamClient
-	notifyJob        *queue.Client
+	job              *queue.Client
 }
 
 func New(
 	trackedGameRepo trackedgamerepo.TrackingRepository,
 	priceHistoryRepo pricehistoryrepo.PriceHistoryRepository,
 	steam steam.SteamClient,
-	notifyJob *queue.Client,
+	job *queue.Client,
 ) *Service {
 	return &Service{
 		trackedGameRepo:  trackedGameRepo,
 		priceHistoryRepo: priceHistoryRepo,
 		steam:            steam,
-		notifyJob:        notifyJob,
+		job:              job,
 	}
 }

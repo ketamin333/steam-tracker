@@ -49,7 +49,7 @@ func Bootstrap() (*App, error) {
 	pricehistoryserviceService := pricehistoryservice.New(trackedgamerepoRepository, pricehistoryrepoRepository, steamSteam, client)
 	mailerMailer := mailer.New(configConfig)
 	emailTarget := notifier.NewEmailTarget(mailerMailer)
-	emailPriceChanged := notifier.NewEmailPriceChanged()
+	emailPriceChanged := notifier.NewEmailPriceChanged(mailerMailer)
 	worker := queue.NewWorker(configConfig, emailTarget, emailPriceChanged)
 	app := &App{
 		Server:  serverServer,

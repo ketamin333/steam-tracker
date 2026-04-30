@@ -23,11 +23,23 @@ func (s *Service) Run(ctx context.Context) error {
 
 	for lang, rows := range groupedLang {
 		ids := make([]int, len(rows))
+		gameIDs := make([]int, len(rows))
 		steamRows := make(map[int]trackedgamerepo.TrackedGameRow)
 
 		for i, row := range rows {
 			ids[i] = row.Game.SteamAppID
+			gameIDs[i] = row.Game.ID
 			steamRows[row.Game.SteamAppID] = row
+		}
+
+		lps, err := s.priceHistoryRepo.GetLastForGames(ctx, gameIDs, lang)
+		if err != nil {
+			continue
+		}
+
+		lp := make(map[int]model.PriceHistory)
+		for _, ph := range lps {
+			lp[ph.GameID] = ph
 		}
 
 		pos, err := s.steam.AppDetails(ctx, lang, ids)
@@ -56,15 +68,28 @@ func (s *Service) Run(ctx context.Context) error {
 				continue
 			}
 
-			if row.TargetPrice != nil && ph.Price <= *row.TargetPrice {
-				jp := queue.PayloadNotificationTarget{
-					User:         row.User,
-					Game:         row.Game,
-					TargetPrice:  *row.TargetPrice,
-					CurrentPrice: ph.Price,
+			if last, ok := lp[row.Game.ID]; ok && last.Price != ph.Price {
+				if err := s.jobNotificationPriceChanged(ctx,
+					queue.PayloadNotificationPriceChanged{
+						User:     row.User,
+						Game:     row.Game,
+						OldPrice: last.Price,
+						NewPrice: ph.Price,
+					},
+				); err != nil {
+					continue
 				}
+			}
 
-				if err := s.notifyJob.EnqueueNotificationTarget(ctx, jp); err != nil {
+			if row.TargetPrice != nil && ph.Price <= *row.TargetPrice {
+				if err := s.jobNotificationTarget(ctx,
+					queue.PayloadNotificationTarget{
+						User:         row.User,
+						Game:         row.Game,
+						TargetPrice:  *row.TargetPrice,
+						CurrentPrice: ph.Price,
+					},
+				); err != nil {
 					continue
 				}
 
@@ -78,4 +103,12 @@ func (s *Service) Run(ctx context.Context) error {
 	slog.Info("ended price history service")
 
 	return nil
+}
+
+func (s *Service) jobNotificationTarget(ctx context.Context, payload queue.PayloadNotificationTarget) error {
+	return s.job.EnqueueNotificationTarget(ctx, payload)
+}
+
+func (s *Service) jobNotificationPriceChanged(ctx context.Context, payload queue.PayloadNotificationPriceChanged) error {
+	return s.job.EnqueueNotificationPriceChanged(ctx, payload)
 }
