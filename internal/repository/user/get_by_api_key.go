@@ -14,9 +14,9 @@ func (r *Repository) GetByAPIKey(ctx context.Context, apiKey string) (*model.Use
 
 	err := r.db.QueryRowContext(
 		ctx,
-		`SELECT id, api_key, lang, created_at FROM users WHERE api_key = $1`,
+		`SELECT id, api_key, lang, email, created_at FROM users WHERE api_key = $1`,
 		apiKey,
-	).Scan(&user.ID, &user.APIKey, &user.Lang, &user.CreatedAt)
+	).Scan(&user.ID, &user.APIKey, &user.Lang, &user.Email, &user.CreatedAt)
 
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, apperr.ErrNotFound

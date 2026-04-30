@@ -57,14 +57,18 @@ func (s *Service) Run(ctx context.Context) error {
 			}
 
 			if row.TargetPrice != nil && ph.Price <= *row.TargetPrice {
-				jp := queue.NotifyJobPayload{
+				jp := queue.PayloadNotificationTarget{
 					User:         row.User,
 					Game:         row.Game,
 					TargetPrice:  *row.TargetPrice,
 					CurrentPrice: ph.Price,
 				}
 
-				if err := s.notifyJob.EnqueueNotification(ctx, jp); err != nil {
+				if err := s.notifyJob.EnqueueNotificationTarget(ctx, jp); err != nil {
+					continue
+				}
+
+				if _, err := s.trackedGameRepo.Update(ctx, &row.User, row.Game.ID, nil); err != nil {
 					continue
 				}
 			}

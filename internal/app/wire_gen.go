@@ -46,8 +46,9 @@ func Bootstrap() (*App, error) {
 	pricehistoryrepoRepository := pricehistoryrepo.New(sqlDB)
 	client := queue.NewClient(configConfig)
 	pricehistoryserviceService := pricehistoryservice.New(trackedgamerepoRepository, pricehistoryrepoRepository, steamSteam, client)
-	emailNotifier := notifier.NewEmail()
-	worker := queue.NewWorker(configConfig, emailNotifier)
+	emailTarget := notifier.NewEmailTarget()
+	emailPriceChanged := notifier.NewEmailPriceChanged()
+	worker := queue.NewWorker(configConfig, emailTarget, emailPriceChanged)
 	app := &App{
 		Server:  serverServer,
 		Tracker: pricehistoryserviceService,

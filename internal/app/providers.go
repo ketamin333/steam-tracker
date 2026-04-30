@@ -59,6 +59,8 @@ var queueSet = wire.NewSet(
 )
 
 var notifierSet = wire.NewSet(
-	notifier.NewEmail,
-	wire.Bind(new(queue.Notifier), new(*notifier.EmailNotifier)),
+	notifier.NewEmailTarget,
+	wire.Bind(new(queue.NotifierTarget), new(*notifier.EmailTarget)),
+	notifier.NewEmailPriceChanged,
+	wire.Bind(new(queue.NotifierPriceChanged), new(*notifier.EmailPriceChanged)),
 )
