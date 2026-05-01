@@ -16,7 +16,7 @@ func (r *Repository) GetAll(ctx context.Context) ([]TrackedGameRow, error) {
 	rows, err := r.db.QueryContext(ctx,
 		`SELECT 
     		tracked_games.id, 
-       		users.id, users.lang, users.created_at,
+       		users.id, users.lang, users.email, users.created_at,
        		games.id, games.steam_app_id, games.name, games.cover_url, games.created_at, games.updated_at,
        		tracked_games.target_price
         FROM tracked_games
@@ -38,6 +38,7 @@ func (r *Repository) GetAll(ctx context.Context) ([]TrackedGameRow, error) {
 			&row.ID,
 			&row.User.ID,
 			&row.User.Lang,
+			&row.User.Email,
 			&row.User.CreatedAt,
 			&row.Game.ID,
 			&row.Game.SteamAppID,

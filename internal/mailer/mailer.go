@@ -34,6 +34,9 @@ func (m *Mailer) Send(to string, subject string, body string) error {
 	}
 
 	port, err := strconv.Atoi(m.cfg.MailPort)
+	if err != nil {
+		return err
+	}
 
 	client, err := mail.NewClient(
 		m.cfg.MailHost,
@@ -46,7 +49,5 @@ func (m *Mailer) Send(to string, subject string, body string) error {
 		return err
 	}
 
-	err = client.DialAndSend(msg)
-
-	return err
+	return client.DialAndSend(msg)
 }
