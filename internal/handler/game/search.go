@@ -2,6 +2,7 @@ package gamehandler
 
 import (
 	"net/http"
+	"steam-tracker/internal/apperr"
 
 	"steam-tracker/internal/httputil"
 	"steam-tracker/internal/middleware"
@@ -19,7 +20,7 @@ func (h *Handler) Search(w http.ResponseWriter, r *http.Request) error {
 	g, err := h.svc.Search(r.Context(), user, query)
 
 	if err != nil {
-		return httputil.Error(w, http.StatusInternalServerError, "server error")
+		return httputil.Error(w, http.StatusInternalServerError, apperr.ErrInternal.Error())
 	}
 
 	return httputil.JSON(w, http.StatusOK, g)

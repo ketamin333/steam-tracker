@@ -20,14 +20,14 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) error {
 	var req updateRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		return httputil.Error(w, http.StatusBadRequest, "invalid request body")
+		return httputil.Error(w, http.StatusBadRequest, apperr.ErrInvalidBody.Error())
 	}
 
 	user := r.Context().Value(middleware.UserKey).(*model.User)
 	u, err := h.svc.Update(r.Context(), user, req.Email, req.Lang)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		return httputil.Error(w, http.StatusNotFound, "user not found")
+		return httputil.Error(w, http.StatusNotFound, apperr.ErrNotFound.Error())
 	}
 
 	if err != nil {

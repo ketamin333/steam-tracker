@@ -16,7 +16,7 @@ import (
 func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) error {
 	gameID, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil || gameID == 0 {
-		return httputil.Error(w, http.StatusBadRequest, "invalid game id")
+		return httputil.Error(w, http.StatusBadRequest, apperr.ErrInvalidParams.Error())
 	}
 
 	user := r.Context().Value(middleware.UserKey).(*model.User)
@@ -27,7 +27,7 @@ func (h *Handler) Delete(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	if err != nil {
-		return httputil.Error(w, http.StatusInternalServerError, "server error")
+		return httputil.Error(w, http.StatusInternalServerError, apperr.ErrInternal.Error())
 	}
 
 	return httputil.JSON(w, http.StatusNoContent, nil)

@@ -20,7 +20,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) error {
 	var req createRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		return httputil.Error(w, http.StatusBadRequest, "invalid request body")
+		return httputil.Error(w, http.StatusBadRequest, apperr.ErrInvalidBody.Error())
 	}
 
 	if req.GameID == 0 {
@@ -34,7 +34,7 @@ func (h *Handler) Create(w http.ResponseWriter, r *http.Request) error {
 		return httputil.Error(w, http.StatusConflict, "game already tracked")
 	}
 	if err != nil {
-		return httputil.Error(w, http.StatusInternalServerError, "server error")
+		return httputil.Error(w, http.StatusInternalServerError, apperr.ErrInternal.Error())
 	}
 
 	return httputil.JSON(w, http.StatusCreated, g)

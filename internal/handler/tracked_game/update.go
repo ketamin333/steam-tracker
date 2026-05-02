@@ -22,7 +22,7 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) error {
 	var req updateRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		return httputil.Error(w, http.StatusBadRequest, "invalid request body")
+		return httputil.Error(w, http.StatusBadRequest, apperr.ErrInvalidBody.Error())
 	}
 
 	gameID, err := strconv.Atoi(chi.URLParam(r, "id"))
@@ -35,11 +35,11 @@ func (h *Handler) Update(w http.ResponseWriter, r *http.Request) error {
 	g, err := h.svc.Update(r.Context(), user, gameID, req.Price)
 
 	if errors.Is(err, apperr.ErrNotFound) {
-		return httputil.Error(w, http.StatusNotFound, "game not found")
+		return httputil.Error(w, http.StatusNotFound, apperr.ErrNotFound.Error())
 	}
 
 	if err != nil {
-		return httputil.Error(w, http.StatusInternalServerError, "server error")
+		return httputil.Error(w, http.StatusInternalServerError, apperr.ErrInternal.Error())
 	}
 
 	return httputil.JSON(w, http.StatusOK, g)
