@@ -3,20 +3,32 @@ package httputil
 import (
 	"encoding/json"
 	"net/http"
+	"steam-tracker/internal/apperr"
 )
+
+type Response struct {
+	Success bool `json:"success"`
+	Message any  `json:"message"`
+}
 
 func Error(w http.ResponseWriter, status int, msg string) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 
-	return json.NewEncoder(w).Encode(map[string]string{"error": msg})
+	return json.NewEncoder(w).Encode(&Response{
+		Success: false,
+		Message: msg,
+	})
 }
 
 func JSON(w http.ResponseWriter, status int, data any) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 
-	return json.NewEncoder(w).Encode(data)
+	return json.NewEncoder(w).Encode(&Response{
+		Success: true,
+		Message: data,
+	})
 }
 
 type HandlerFunc func(w http.ResponseWriter, r *http.Request) error
@@ -24,7 +36,7 @@ type HandlerFunc func(w http.ResponseWriter, r *http.Request) error
 func Wrap(h HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := h(w, r); err != nil {
-			Error(w, http.StatusInternalServerError, "internal server error")
+			Error(w, http.StatusInternalServerError, apperr.ErrInternal.Error())
 		}
 	}
 }
