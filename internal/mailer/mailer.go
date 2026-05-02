@@ -28,7 +28,6 @@ func (m *Mailer) Send(to string, subject string, body string) error {
 	if err := msg.From(m.cfg.MailFrom); err != nil {
 		return err
 	}
-
 	if err := msg.To(to); err != nil {
 		return err
 	}

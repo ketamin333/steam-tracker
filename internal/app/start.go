@@ -8,7 +8,7 @@ import (
 
 func (a *App) Start() error {
 	go func() {
-		ticker := time.NewTicker(15 * time.Second)
+		ticker := time.NewTicker(2 * time.Minute)
 		defer ticker.Stop()
 
 		for range ticker.C {

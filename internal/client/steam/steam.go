@@ -10,7 +10,7 @@ import (
 
 type Steam struct {
 	httpClient *http.Client
-	baseURL    string
+	BaseURL    string
 }
 
 type SteamClient interface {
@@ -22,9 +22,7 @@ var _ SteamClient = (*Steam)(nil)
 
 func New() *Steam {
 	return &Steam{
-		httpClient: &http.Client{
-			Timeout: time.Second * 10,
-		},
-		baseURL: "https://store.steampowered.com/api",
+		httpClient: &http.Client{Timeout: time.Second * 10},
+		BaseURL:    "https://store.steampowered.com/api",
 	}
 }

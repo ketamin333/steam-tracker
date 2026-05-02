@@ -2,8 +2,10 @@ package app
 
 import (
 	"steam-tracker/internal/client/steam"
+	"steam-tracker/internal/client/telegrambot"
 	gamehandler "steam-tracker/internal/handler/game"
 	trackedgamehandler "steam-tracker/internal/handler/tracked_game"
+	userhandler "steam-tracker/internal/handler/user"
 	"steam-tracker/internal/mailer"
 	"steam-tracker/internal/notifier"
 	"steam-tracker/internal/queue"
@@ -16,6 +18,7 @@ import (
 	gameservice "steam-tracker/internal/service/game"
 	pricehistoryservice "steam-tracker/internal/service/price_history"
 	trackedgameservice "steam-tracker/internal/service/tracked_game"
+	userservice "steam-tracker/internal/service/user"
 
 	"github.com/google/wire"
 )
@@ -42,16 +45,21 @@ var serviceSet = wire.NewSet(
 	trackedgameservice.New,
 	wire.Bind(new(trackedgamehandler.TrackedGameService), new(*trackedgameservice.Service)),
 	pricehistoryservice.New,
+	userservice.New,
+	wire.Bind(new(userhandler.UserService), new(*userservice.Service)),
 )
 
 var clientSet = wire.NewSet(
 	steam.New,
 	wire.Bind(new(steam.SteamClient), new(*steam.Steam)),
+	telegrambot.New,
+	wire.Bind(new(telegrambot.TelegramBotCleint), new(*telegrambot.TelegramBot)),
 )
 
 var handlerSet = wire.NewSet(
 	gamehandler.New,
 	trackedgamehandler.New,
+	userhandler.New,
 )
 
 var queueSet = wire.NewSet(

@@ -11,13 +11,13 @@ import (
 	"steam-tracker/internal/model"
 )
 
-type trackRequest struct {
+type createRequest struct {
 	GameID int      `json:"game_id"`
 	Price  *float64 `json:"price"`
 }
 
 func (h *Handler) Create(w http.ResponseWriter, r *http.Request) error {
-	var req trackRequest
+	var req createRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		return httputil.Error(w, http.StatusBadRequest, "invalid request body")

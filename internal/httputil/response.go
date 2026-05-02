@@ -8,17 +8,15 @@ import (
 func Error(w http.ResponseWriter, status int, msg string) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(map[string]string{"error": msg})
 
-	return nil
+	return json.NewEncoder(w).Encode(map[string]string{"error": msg})
 }
 
 func JSON(w http.ResponseWriter, status int, data any) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(data)
 
-	return nil
+	return json.NewEncoder(w).Encode(data)
 }
 
 type HandlerFunc func(w http.ResponseWriter, r *http.Request) error

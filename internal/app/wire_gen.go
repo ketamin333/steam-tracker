@@ -12,6 +12,7 @@ import (
 	"steam-tracker/internal/db"
 	"steam-tracker/internal/handler/game"
 	"steam-tracker/internal/handler/tracked_game"
+	"steam-tracker/internal/handler/user"
 	"steam-tracker/internal/mailer"
 	"steam-tracker/internal/notifier"
 	"steam-tracker/internal/queue"
@@ -24,6 +25,7 @@ import (
 	"steam-tracker/internal/service/game"
 	"steam-tracker/internal/service/price_history"
 	"steam-tracker/internal/service/tracked_game"
+	"steam-tracker/internal/service/user"
 )
 
 // Injectors from wire.go:
@@ -42,7 +44,9 @@ func Bootstrap() (*App, error) {
 	trackedgamerepoRepository := trackedgamerepo.New(sqlDB)
 	trackedgameserviceService := trackedgameservice.New(trackedgamerepoRepository)
 	trackedgamehandlerHandler := trackedgamehandler.New(trackedgameserviceService)
-	mux := router.New(repository, handler, trackedgamehandlerHandler)
+	userserviceService := userservice.New(repository)
+	userhandlerHandler := userhandler.New(userserviceService)
+	mux := router.New(repository, handler, trackedgamehandlerHandler, userhandlerHandler)
 	serverServer := server.New(configConfig, mux)
 	pricehistoryrepoRepository := pricehistoryrepo.New(sqlDB)
 	client := queue.NewClient(configConfig)

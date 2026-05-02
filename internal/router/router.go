@@ -3,6 +3,7 @@ package router
 import (
 	gamehandler "steam-tracker/internal/handler/game"
 	trackedgamehandler "steam-tracker/internal/handler/tracked_game"
+	userhandler "steam-tracker/internal/handler/user"
 	"steam-tracker/internal/httputil"
 	"steam-tracker/internal/middleware"
 	userrepo "steam-tracker/internal/repository/user"
@@ -15,6 +16,7 @@ func New(
 	userRepo userrepo.UserRepository,
 	gameHandler *gamehandler.Handler,
 	trackedGameHandler *trackedgamehandler.Handler,
+	userHandler *userhandler.Handler,
 ) *chi.Mux {
 	r := chi.NewRouter()
 
@@ -23,6 +25,11 @@ func New(
 
 	r.Route("/api", func(r chi.Router) {
 		r.Use(middleware.Auth(userRepo))
+
+		r.Route("/user", func(r chi.Router) {
+			r.Get("/", httputil.Wrap(userHandler.Get))
+			r.Patch("/", httputil.Wrap(userHandler.Update))
+		})
 
 		r.Get("/games", httputil.Wrap(gameHandler.Search))
 

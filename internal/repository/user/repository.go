@@ -13,12 +13,12 @@ type Repository struct {
 
 type UserRepository interface {
 	GetByAPIKey(ctx context.Context, apiKey string) (*model.User, error)
+	Create(ctx context.Context, user *model.User) (*model.User, error)
+	Update(ctx context.Context, user *model.User, email *string, lang *string) (*model.User, error)
 }
 
 var _ UserRepository = (*Repository)(nil)
 
 func New(db *sql.DB) *Repository {
-	return &Repository{
-		db: db,
-	}
+	return &Repository{db: db}
 }
