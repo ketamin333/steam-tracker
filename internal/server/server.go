@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -29,7 +28,7 @@ func New(cfg *config.Config, router *chi.Mux) *Server {
 
 func (s *Server) Run() error {
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%s", s.cfg.ServerPort),
+		Addr:    ":" + s.cfg.ServerPort,
 		Handler: s.router,
 	}
 

@@ -1,7 +1,6 @@
 package telegrambot
 
 import (
-	"context"
 	"net/http"
 	"steam-tracker/internal/config"
 	"time"
@@ -13,11 +12,9 @@ type TelegramBot struct {
 	BotToken   string
 }
 
-type TelegramBotCleint interface {
-	SendMessage(ctx context.Context, chatID int, text string) error
-	SetWebhook(ctx context.Context, webhookURL string, secretToken *string) error
-	DeleteWebhook(ctx context.Context) error
-}
+type TelegramBotResponse struct{}
+
+type TelegramBotCleint interface{}
 
 var _ TelegramBotCleint = (*TelegramBot)(nil)
 

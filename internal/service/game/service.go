@@ -11,8 +11,5 @@ type Service struct {
 }
 
 func New(steam steam.SteamClient, repo gamerepo.GameRepository) *Service {
-	return &Service{
-		steam: steam,
-		repo:  repo,
-	}
+	return &Service{steam: steam, repo: repo}
 }

@@ -34,12 +34,12 @@ func Auth(repo userrepo.UserRepository) func(http.Handler) http.Handler {
 			user, err := repo.GetByAPIKey(r.Context(), apiKey)
 
 			if errors.Is(err, apperr.ErrNotFound) {
-				httputil.Error(w, http.StatusUnauthorized, "unauthorized")
+				httputil.Error(w, http.StatusUnauthorized, apperr.ErrUnauthorized.Error())
 				return
 			}
 
 			if err != nil {
-				httputil.Error(w, http.StatusInternalServerError, "server error")
+				httputil.Error(w, http.StatusInternalServerError, apperr.ErrInternal.Error())
 				return
 			}
 
