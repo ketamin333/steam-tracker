@@ -40,7 +40,7 @@ func (s *Steam) AppDetails(ctx context.Context, lang string, steamAppID []int) (
 		"filters": {"price_overview"},
 	}
 
-	appDetailsURL := fmt.Sprintf("%s/%s?%s", s.BaseURL, "appdetails", params.Encode())
+	appDetailsURL := fmt.Sprintf("%s/%s?%s", s.baseURL, "appdetails", params.Encode())
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, appDetailsURL, nil)
 	if err != nil {

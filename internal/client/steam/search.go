@@ -28,7 +28,7 @@ func (s *Steam) Search(ctx context.Context, user *model.User, query string) ([]S
 		"cc":   {user.Lang},
 	}
 
-	searchURL := fmt.Sprintf("%s/%s?%s", s.BaseURL, "storesearch", params.Encode())
+	searchURL := fmt.Sprintf("%s/%s?%s", s.baseURL, "storesearch", params.Encode())
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, searchURL, nil)
 
 	if err != nil {
