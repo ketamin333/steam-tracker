@@ -53,7 +53,7 @@ var clientSet = wire.NewSet(
 	steam.New,
 	wire.Bind(new(steam.SteamClient), new(*steam.Steam)),
 	telegrambot.New,
-	wire.Bind(new(telegrambot.TelegramBotCleint), new(*telegrambot.TelegramBot)),
+	wire.Bind(new(telegrambot.TelegramBotClient), new(*telegrambot.TelegramBot)),
 )
 
 var handlerSet = wire.NewSet(
